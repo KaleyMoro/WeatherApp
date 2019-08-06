@@ -65,10 +65,16 @@
 	
 	
 	<script type="text/javascript">
-		<!-- $("#submit").on("click", function(){ -->
-			<!-- var cityname = $("#cityName").val(); -->
+	
+	var apiKey = "YOUR_API_KEY";
+		$("#submit").on("click", function(event){
+			event.preventDefault();
+			var cityname = $("#cityName").val();
+			getJson(cityname);
 		
-		<!-- }); -->
+		});
+		
+		function getJson(cityname){
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -81,8 +87,9 @@
 		console.log(mainWeather);
 		}
 		};
-		xmlhttp.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=Tokyo&appid=YOUR_API_KEY", true);
+		xmlhttp.open("GET", "https://api.openweathermap.org/data/2.5/weather?q="+cityname+"&appid="+apiKey, true);
 		xmlhttp.send();
+		}
 
 
 	</script>
