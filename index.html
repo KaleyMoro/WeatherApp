@@ -65,10 +65,26 @@
 	
 	
 	<script type="text/javascript">
-		$("#submit").on("click", function(){
-			var cityname = $("#cityName").val();
-			alert(cityname);
-		});
+		<!-- $("#submit").on("click", function(){ -->
+			<!-- var cityname = $("#cityName").val(); -->
+		
+		<!-- }); -->
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+		var obj = JSON.parse(this.responseText);
+		var weatherArr= obj.weather;
+		var mainWeather = obj.main
+		var description = weatherArr[0].description;
+		console.log(description);
+		console.log(weatherArr[0]);
+		console.log(mainWeather);
+		}
+		};
+		xmlhttp.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=Tokyo&appid=YOUR_API_KEY", true);
+		xmlhttp.send();
+
+
 	</script>
   </body>
 </html>
