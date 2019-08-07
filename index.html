@@ -29,6 +29,11 @@
 		text-align: center;
 		}
 		
+		#result{
+		display: none;
+		margin-top: 10px;
+		}
+		
 		
 		
 	</style>
@@ -52,7 +57,7 @@
 			<button type="submit" class="btn btn-primary" id="submit">Enter</button>
 			
 		</form>
-		<div id="result"></div>
+		<div id="result" class="alert alert-success" role="alert"></div>
 	</div>
 		
 	</div>
@@ -101,18 +106,56 @@
 		<!-- GETTING API RESPONSE USING .ajax -->
 		
 		$("#submit").on("click", function(event){
-		var apiKey = "YOUR_API_KEY";
+		
+		$("#result").empty();
+		
+		
+		
+		var apiKey = "1f3674b4cac651ef9e4f743eb9ff3e06";
 		var cityname = $("#cityName").val();
 			event.preventDefault();
 			$.ajax({url: "https://api.openweathermap.org/data/2.5/weather?q="+cityname+"&appid="+apiKey,
 				type: "GET",
 				dataType: 'json', // added data type
-				success: function(result){
-				console.log(result.weather)
-				}
 				
-			});
+				success: function(result){
+			
+					var weatherArr = result.weather;
+					var description = weatherArr[0].description;
+					var mainWeather = result.main;
+					var temp = mainWeather.temp
+					var tempDegF = Math.round((temp - 273) * 100) / 100 + "°C";				
+					$("#result").append("<p>The weather in "+cityname+" is " + description + "</p>" +
+					"<p>and the current Temperature is " + tempDegF + "</p>");
+					
+					//console.log(tempDegF);
+					$("#result").addClass("alert-success");
+					$("#result").removeClass("alert-danger");
+					$("#result").show(250);
+				
+				
+				
+				},
+					
+				/* error: function(err){
+					var cod = err.cod;
+					console.log(cod);
+				} */
+				
+				error: function(XMLHttpRequest, textStatus, errorThrown){
+					$("#result").append("<p>" + textStatus + " Type: " + errorThrown + "</p>");
+					$("#result").removeClass("alert-success");
+					$("#result").addClass("alert-danger");
+					$("#result").show(250);
+				
+				}
+			})
+				
+				
+				
+				
 		});
+			
 
 		
 		
