@@ -12,7 +12,8 @@
 	
 	<style type="text/css">
 		body{
-		background-image: url("bg.jfif");
+		
+		background: url("bg.jfif") no-repeat center center fixed; 
 		background-size: cover;
 		}
 		
@@ -32,6 +33,14 @@
 		#result{
 		display: none;
 		margin-top: 10px;
+		}
+		
+		
+		
+		#map{
+		display: none;
+		height: 350px;
+		width: 470px;
 		}
 		
 		
@@ -57,116 +66,66 @@
 			<button type="submit" class="btn btn-primary" id="submit">Enter</button>
 			
 		</form>
-		<div id="result" class="alert alert-success" role="alert"></div>
-	</div>
 		
+		<div id="result" class="alert alert-success" role="alert"></div>
+		<input type ="hidden" id="latId" value="">
+	</div>
+	
+		
+	<div id="map"></div>
+    
 	</div>
 
-    <!-- Optional JavaScript -->
-	
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   
 	
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
 	
-		<script type="text/javascript">
 	
-	<!-- GETTING WEATHER DATA USING JAVASCRIPT -->
+	<script type="text/javascript">
+	var lattitude = 37.77;
+	var longitude = -122.41;
 	
-	/* var apiKey = "YOUR_API_KEY";
-		$("#submit").on("click", function(event){
-			event.preventDefault();
-			var cityname = $("#cityName").val();
-			getJson(cityname);
+	showConsoleAfterClick=(lat, lon)=>{
+	lattitude = parseFloat(lat);
+	longitude = parseFloat(lon);
+	initMap(lattitude, longitude);
+	
+	console.log(lattitude, longitude);
+	$("#map").show();	
+	
+	}
+	
+	function initMap(lattitude, longitude) {
 		
-		});
+		var city = {lat: lattitude, lng: longitude};
 		
-		function getJson(cityname){
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-		var obj = JSON.parse(this.responseText);
-		var weatherArr= obj.weather;
-		var mainWeather = obj.main
-		var description = weatherArr[0].description;
-		console.log(description);
-		console.log(weatherArr[0]);
-		console.log(mainWeather);
+		var map = new google.maps.Map(
+		document.getElementById('map'), {zoom: 9, center: city});
+	
+		var marker = new google.maps.Marker({position: city, map: map});
 		}
-		};
-		xmlhttp.open("GET", "https://api.openweathermap.org/data/2.5/weather?q="+cityname+"&appid="+apiKey, true);
-		xmlhttp.send();
-		} */
-		
-		<!-- ---------------------------------------------------------------------- -->
-		
-		<!-- GETTING API RESPONSE USING .ajax -->
-		
-		$("#submit").on("click", function(event){
-		
-		$("#result").empty();
-		
-		
-		
-		var apiKey = "1f3674b4cac651ef9e4f743eb9ff3e06";
-		var cityname = $("#cityName").val();
-			event.preventDefault();
-			$.ajax({url: "https://api.openweathermap.org/data/2.5/weather?q="+cityname+"&appid="+apiKey,
-				type: "GET",
-				dataType: 'json', // added data type
-				
-				success: function(result){
-			
-					var weatherArr = result.weather;
-					var description = weatherArr[0].description;
-					var mainWeather = result.main;
-					var temp = mainWeather.temp
-					var tempDegF = Math.round((temp - 273) * 100) / 100 + "°C";				
-					$("#result").append("<p>The weather in "+cityname+" is " + description + "</p>" +
-					"<p>and the current Temperature is " + tempDegF + "</p>");
-					
-					//console.log(tempDegF);
-					$("#result").addClass("alert-success");
-					$("#result").removeClass("alert-danger");
-					$("#result").show(250);
-				
-				
-				
-				},
-					
-				/* error: function(err){
-					var cod = err.cod;
-					console.log(cod);
-				} */
-				
-				error: function(XMLHttpRequest, textStatus, errorThrown){
-					$("#result").append("<p>" + textStatus + " Type: " + errorThrown + "</p>");
-					$("#result").removeClass("alert-success");
-					$("#result").addClass("alert-danger");
-					$("#result").show(250);
-				
-				}
-			})
-				
-				
-				
-				
-		});
-			
-
-		
-		
-		
-
-		
-		
-		
-
-
+	
+	
+	
+	
 	</script>
+	
+	
+	<script src = "main.js"></script>
+	
+	
+	
+	
+
+	
+
+	
 	
 	
   </body>
